@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MG Windsor EV — Replacement Schedule</title>
+<style>
+  :root{
+    --bg:#f4f7f8; --card:#fff; --text:#1d2933; --muted:#667580;
+    --line:#dbe2e6; --accent:#087f8c; --accent-soft:#e5f5f7;
+    --replace:#b42318; --replace-soft:#fdecea;
+    --shadow:0 8px 28px rgba(24,39,52,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+       background:linear-gradient(180deg,#eef5f6 0,#f7f9fa 240px,#f4f7f8 100%);
+       color:var(--text)}
+  .wrap{max-width:900px;margin:0 auto;padding:32px 20px 50px}
+  header{background:var(--card);border-radius:18px;padding:28px;
+         box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:22px}
+  .eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;
+           color:var(--accent);text-transform:uppercase;margin-bottom:8px}
+  h1{margin:0 0 8px;font-size:30px}
+  .subtitle{margin:0;color:var(--muted);line-height:1.55}
+  .controls{margin-top:22px;display:grid;grid-template-columns:minmax(260px,430px) 1fr;
+            gap:16px;align-items:end}
+  label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+  select{width:100%;padding:14px;border:1px solid #c9d4d9;border-radius:12px;
+         background:#fff;color:var(--text);font-size:16px;font-weight:700;outline:none;cursor:pointer}
+  select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(8,127,140,.12)}
+  .rule{align-self:center;color:var(--muted);font-size:13px;line-height:1.5}
+  .summary{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:22px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:15px;
+        padding:18px;box-shadow:0 3px 15px rgba(24,39,52,.04)}
+  .stat .num{font-size:25px;font-weight:850;margin-bottom:4px}
+  .stat .label{font-size:12px;color:var(--muted);font-weight:650}
+  .section{background:var(--card);border:1px solid var(--line);border-radius:18px;
+           box-shadow:var(--shadow);overflow:hidden}
+  .section-head{padding:18px 22px;border-bottom:1px solid var(--line);
+                display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .section-head h2{font-size:17px;margin:0}
+  .section-head span{font-size:12px;color:var(--muted)}
+  .replacement{padding:18px 22px;border-bottom:1px solid #edf0f2;
+               display:flex;align-items:center;gap:14px}
+  .replacement:last-child{border-bottom:0}
+  .icon{width:38px;height:38px;border-radius:10px;background:var(--replace-soft);
+        display:grid;place-items:center;font-size:18px;flex:none}
+  .name{font-size:15px;font-weight:700}
+  .empty{padding:42px 24px;text-align:center;color:var(--muted)}
+  .empty .big{font-size:32px;margin-bottom:8px}
+  .cost{margin-left:auto;text-align:right;white-space:nowrap}
+  .cost-value{font-size:14px;font-weight:800;color:var(--text)}
+  .cost-label{font-size:10px;color:var(--muted);margin-top:2px}
+  .total-card{margin-top:18px;background:var(--accent-soft);border:1px solid #c9e7ea;
+              border-radius:15px;padding:18px 20px;display:flex;justify-content:space-between;
+              align-items:center;gap:16px}
+  .total-title{font-size:13px;font-weight:750}
+  .total-sub{font-size:11px;color:var(--muted);margin-top:3px}
+  .total-value{font-size:22px;font-weight:900;color:var(--accent);white-space:nowrap}
+  .source-box{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:16px;
+              padding:18px 20px;font-size:13px;line-height:1.65;color:#52616b}
+  .source-box strong{color:var(--text)}
+  .notes{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:16px;
+         padding:18px 20px;color:#52616b;font-size:13px;line-height:1.6}
+  .notes strong{color:var(--text)}
+  @media(max-width:650px){
+    .wrap{padding:18px 12px 35px} header{padding:20px} h1{font-size:25px}
+    .controls,.summary{grid-template-columns:1fr}
+    .replacement{padding:16px}
+    .cost{text-align:left;margin-left:52px}
+    .total-card{align-items:flex-start;flex-direction:column}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Periodic Maintenance</div>
+    <h1>MG Windsor EV — Replacement Schedule</h1>
+    <p class="subtitle">
+      Select a service interval to see only the components that the maintenance schedule
+      specifically marks for <strong>replacement</strong>.
+    </p>
+    <div class="controls">
+      <div>
+        <label for="serviceSelect">Select service interval</label>
+        <select id="serviceSelect"></select>
+      </div>
+      <div class="rule">
+        <strong>R = Replace</strong><br>
+        Service interval is based on whichever comes first: distance or time.
+      </div>
+    </div>
+  </header>
+
+  <div id="summary" class="summary"></div>
+  <div id="content"></div>
+
+  <div class="source-box">
+    <strong>Price information</strong><br>
+    The approximate prices shown on this page are based on the user's most recent
+    <strong>30,000 km service on 25/05/2026 at Fortune MG Muvattupuzha</strong>.<br><br>
+    These prices are indicative and may change later due to parts-price revisions,
+    taxes, labour/service changes, or other charges. Prices will be updated on this
+    page <strong>only when the next service takes place</strong>.<br><br>
+    <strong>Important:</strong> Please cross-check the current prices with your
+    <strong>MG service advisor</strong> before handing over the vehicle for service.
+    The final invoice from the service centre should be treated as the actual cost.
+  </div>
+
+  <div class="notes">
+    <strong>Replacement schedule:</strong><br>
+    • AC filter — every 15,000 km / 1 year.<br>
+    • Brake fluid — every 30,000 km / 2 years.<br>
+    • Coolant — every 30,000 km / 2 years.<br>
+    • Reducer oil — first replacement at 5,000 km / 6 months, then every 30,000 km / 2 years.<br>
+    • From the 30,000 km service onward, the service charge is approximately <strong>₹2,301</strong>.
+      Earlier services are shown without this paid-service charge.<br>
+    • Inspection-only items are intentionally not displayed on this page.
+  </div>
+</div>
+
+<script>
+const prices = {
+  "AC filter": 796,
+  "Coolant": 821,
+  "Brake fluid": 515,
+  "Reducer oil": 1556
+};
+
+const services = [
+  {km:1000, time:"1 Month", replacements:[]},
+  {km:5000, time:"6 Months", replacements:["Reducer oil"]},
+  {km:15000, time:"1 Year", replacements:["AC filter"]},
+  {km:30000, time:"2 Years", replacements:["AC filter","Brake fluid","Coolant","Reducer oil"]},
+  {km:45000, time:"3 Years", replacements:["AC filter"]},
+  {km:60000, time:"4 Years", replacements:["AC filter","Brake fluid","Coolant","Reducer oil"]},
+  {km:75000, time:"5 Years", replacements:["AC filter"]},
+  {km:90000, time:"6 Years", replacements:["AC filter","Brake fluid","Coolant","Reducer oil"]},
+  {km:105000, time:"7 Years", replacements:["AC filter"]},
+  {km:120000, time:"8 Years", replacements:["AC filter","Brake fluid","Coolant","Reducer oil"]},
+  {km:135000, time:"9 Years", replacements:["AC filter"]},
+  {km:150000, time:"10 Years", replacements:["AC filter","Brake fluid","Coolant","Reducer oil"]}
+];
+
+const select=document.getElementById("serviceSelect");
+services.forEach((s,i)=>{
+  const opt=document.createElement("option");
+  opt.value=i;
+  opt.textContent=`${s.km.toLocaleString("en-IN")} km — ${s.time}`;
+  select.appendChild(opt);
+});
+
+function render(){
+  const s=services[Number(select.value)];
+  const count=s.replacements.length;
+  const partsTotal=s.replacements.reduce((sum,item)=>sum+prices[item],0);
+  const serviceCharge=s.km>=30000 ? 2301 : 0;
+  const estimatedTotal=partsTotal+serviceCharge;
+
+  document.getElementById("summary").innerHTML=`
+    <div class="stat">
+      <div class="num">${s.km.toLocaleString("en-IN")} km</div>
+      <div class="label">${s.time} service</div>
+    </div>
+    <div class="stat">
+      <div class="num">₹${estimatedTotal.toLocaleString("en-IN")}</div>
+      <div class="label">${s.km>=30000 ? "Approx. replacements + service charge" : "Approx. scheduled replacement cost"}</div>
+    </div>
+  `;
+
+  if(count===0){
+    document.getElementById("content").innerHTML=`
+      <section class="section">
+        <div class="empty">
+          <div class="big">✓</div>
+          <strong>No scheduled replacements</strong>
+          <div>This service interval contains inspection/check items only.</div>
+        </div>
+      </section>`;
+    return;
+  }
+
+  const rows=s.replacements.map(item=>`
+    <div class="replacement">
+      <div class="icon">🔧</div>
+      <div class="name">${item}</div>
+      <div class="cost">
+        <div class="cost-value">₹${prices[item].toLocaleString("en-IN")}</div>
+        <div class="cost-label">approx. price</div>
+      </div>
+    </div>`).join("");
+
+  const serviceText = s.km>=30000 ? `
+    <div class="total-card">
+      <div>
+        <div class="total-title">Approximate estimated total</div>
+        <div class="total-sub">Replacement parts ₹${partsTotal.toLocaleString("en-IN")} + service charge ₹2,301</div>
+      </div>
+      <div class="total-value">₹${estimatedTotal.toLocaleString("en-IN")}</div>
+    </div>` : "";
+
+  document.getElementById("content").innerHTML=`
+    <section class="section">
+      <div class="section-head">
+        <h2>Scheduled Replacements</h2>
+        <span>${count} item${count===1?"":"s"}</span>
+      </div>
+      ${rows}
+    </section>
+    ${serviceText}`;
+  document.title=`MG Windsor EV — ${s.km.toLocaleString("en-IN")} km`;
+}
+select.addEventListener("change",render);
+render();
+</script>
+</body>
+</html>
