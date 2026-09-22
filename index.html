@@ -112,15 +112,28 @@
   <div id="content"></div>
 
   <div class="source-box">
-    <strong>Price information</strong><br>
-    The approximate prices shown on this page are based on the user's most recent
-    <strong>30,000 km service on 25/05/2026 at Fortune MG Muvattupuzha</strong>.<br><br>
-    These prices are indicative and may change later due to parts-price revisions,
-    taxes, labour/service changes, or other charges. Prices will be updated on this
-    page <strong>only when the next service takes place</strong>.<br><br>
+    <strong>Mandatory scheduled replacements</strong><br>
+    The items shown above are the <strong>scheduled replacement items marked “R” in the
+    Windsor user manual</strong> for the selected service interval. They are the
+    replacement items used for this maintenance-cost calculation.<br><br>
+
+    <strong>Other service/maintenance work:</strong> Items such as caliper greasing,
+    brake cleaning, wheel balancing, wheel alignment and tyre rotation are
+    <strong>not included in this calculation</strong>. They are not listed as
+    mandatory scheduled replacement items in the user-manual schedule used here.
+    Such work may be recommended based on the vehicle's condition or service-centre
+    practice and can also be carried out at suitable independent/tyre service centres
+    where appropriate.<br><br>
+
+    <strong>Price information:</strong> The approximate prices shown on this page are
+    based on the user's most recent <strong>30,000 km service on 25/05/2026 at
+    Fortune MG Muvattupuzha</strong>. These prices are indicative and may change later
+    due to price revisions, taxes, labour/service changes, or other charges. Prices
+    will be updated on this page <strong>only when the next service takes place</strong>.<br><br>
+
     <strong>Important:</strong> Please cross-check the current prices with your
     <strong>MG service advisor</strong> before handing over the vehicle for service.
-    The final invoice from the service centre should be treated as the actual cost.
+    The final service-centre invoice should be treated as the actual cost.
   </div>
 
   <div class="notes">
@@ -218,7 +231,7 @@ function render(){
   document.getElementById("content").innerHTML=`
     <section class="section">
       <div class="section-head">
-        <h2>Scheduled Replacements</h2>
+        <h2>Mandatory Scheduled Replacements</h2>
         <span>${count} item${count===1?"":"s"}</span>
       </div>
       ${rows}
