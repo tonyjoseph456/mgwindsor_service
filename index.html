@@ -41,11 +41,12 @@
   .section-head h2{font-size:17px;margin:0}
   .section-head span{font-size:12px;color:var(--muted)}
   .replacement{padding:18px 22px;border-bottom:1px solid #edf0f2;
-               display:flex;align-items:center;gap:14px}
+               display:grid;grid-template-columns:38px minmax(0,1fr) auto;
+               align-items:center;gap:14px}
   .replacement:last-child{border-bottom:0}
   .icon{width:38px;height:38px;border-radius:10px;background:var(--replace-soft);
         display:grid;place-items:center;font-size:18px;flex:none}
-  .name{font-size:15px;font-weight:700}
+  .name{font-size:15px;font-weight:700;min-width:0}
   .empty{padding:42px 24px;text-align:center;color:var(--muted)}
   .empty .big{font-size:32px;margin-bottom:8px}
   .cost{margin-left:auto;text-align:right;white-space:nowrap}
@@ -64,11 +65,25 @@
          padding:18px 20px;color:#52616b;font-size:13px;line-height:1.6}
   .notes strong{color:var(--text)}
   @media(max-width:650px){
-    .wrap{padding:18px 12px 35px} header{padding:20px} h1{font-size:25px}
+    .wrap{padding:14px 12px 30px}
+    header{padding:18px}
+    h1{font-size:24px;line-height:1.2}
+    .subtitle{font-size:14px}
     .controls,.summary{grid-template-columns:1fr}
-    .replacement{padding:16px}
-    .cost{text-align:left;margin-left:52px}
-    .total-card{align-items:flex-start;flex-direction:column}
+    .stat{padding:16px}
+    .stat .num{font-size:23px}
+    .section-head{padding:16px 18px}
+    .replacement{
+      padding:15px 18px;
+      grid-template-columns:38px minmax(0,1fr) auto;
+      gap:12px;
+    }
+    .name{font-size:14px;line-height:1.3}
+    .cost{text-align:right;margin-left:0}
+    .cost-value{font-size:13px}
+    .cost-label{font-size:9px}
+    .total-card{align-items:flex-start;flex-direction:column;padding:16px 18px}
+    .total-value{font-size:21px}
   }
 </style>
 </head>
